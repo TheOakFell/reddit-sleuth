@@ -1,6 +1,0 @@
-[[redirects]]
-  from = "/api/reddit/*"
-  to = "https://www.reddit.com/:splat"
-  status = 200
-  force = true
-  headers = {User-Agent = "Mozilla/5.0 (compatible; RedditSleuth/1.0)"}
