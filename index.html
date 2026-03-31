@@ -789,17 +789,20 @@
   function san(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
   // ── API ──
+  const PROXY = 'https://api.allorigins.win/raw?url=';
+  function proxied(url) { return PROXY + encodeURIComponent(url); }
+
   async function redditSearch(user, type, after, sort) {
     const p = new URLSearchParams({ q:`author:${user}`, type, sort, limit:25, raw_json:1 });
     if (after) p.set('after', after);
-    const r = await fetch(`https://www.reddit.com/search.json?${p}`);
+    const r = await fetch(proxied(`https://www.reddit.com/search.json?${p}`));
     if (!r.ok) throw new Error('Reddit API ' + r.status);
     return r.json();
   }
 
   async function checkProfile(user) {
     try {
-      const r = await fetch(`https://www.reddit.com/user/${user}/about.json?raw_json=1`);
+      const r = await fetch(proxied(`https://www.reddit.com/user/${user}/about.json?raw_json=1`));
       if (r.status === 404) return { exists:false };
       if (!r.ok) return { exists:true, hidden:true };
       const d = await r.json();
